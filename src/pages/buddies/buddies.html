@@ -23,6 +23,16 @@
             <ion-icon name="person-add"></ion-icon>
             Add
           </button>
+
+          <button *ngIf="!is_followed(key)" ion-button color="default" (click)="follow(key)">
+            <ion-icon ios="ios-eye" md="md-eye"></ion-icon>
+            Follow
+          </button>
+
+          <button *ngIf="is_followed(key)" ion-button color="default" (click)="follow(key)">
+            <ion-icon ios="ios-eye-off" md="md-eye-off"></ion-icon>
+            Un follow
+          </button>
         </ion-item-options>
 
       </ion-item-sliding>

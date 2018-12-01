@@ -4,6 +4,7 @@ import {UserProvider} from '../../providers/user/user';
 import {RequestsProvider} from '../../providers/requests/requests';
 import {connreq} from '../../models/interfaces/request';
 import firebase from 'firebase';
+import {FollowProvider} from "../../providers/follow/follow";
 
 /**
  * Generated class for the BuddiesPage page.
@@ -23,7 +24,7 @@ export class BuddiesPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public userservice: UserProvider, public alertCtrl: AlertController,
-              public requestservice: RequestsProvider) {
+              public requestservice: RequestsProvider, public followService: FollowProvider) {
     this.userservice.getallusers().then((res: any) => {
       this.filteredusers = res;
       this.temparr = res;
@@ -52,9 +53,7 @@ export class BuddiesPage {
   sendreq(recipient) {
     this.newrequest.sender = firebase.auth().currentUser.uid;
     this.newrequest.recipient = recipient.uid;
-    if (this.newrequest.sender === this.newrequest.recipient)
-      alert('You are your friend always');
-    else {
+
       let successalert = this.alertCtrl.create({
         title: 'Request sent',
         subTitle: 'Your request was sent to ' + recipient.displayName,
@@ -70,8 +69,33 @@ export class BuddiesPage {
       }).catch((err) => {
         alert(err);
       })
-    }
   }
 
+  follow(userToFollow) {
+    let successalert = this.alertCtrl.create({
+      title: 'Request sent',
+      subTitle: 'You followed ' + userToFollow.displayName || userToFollow.username,
+      buttons: ['ok']
+    });
+
+
+    this.followService.follow(userToFollow.uid).then((res: any) => {
+      if (res.success) {
+        successalert.present();
+      }
+    }).catch((err) => {
+      alert(err);
+    })
+  }
+
+
+  is_followed(key) {
+    for (var i in key.followers) {
+      if (key.followers[i].user_id === firebase.auth().currentUser.uid) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

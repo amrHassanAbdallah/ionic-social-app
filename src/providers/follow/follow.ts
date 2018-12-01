@@ -19,9 +19,9 @@ export class FollowProvider {
   //method to get the followers
 
   //method to get the  users I follow
-  updateFollowers() {
+  updateFollowers(followeeKey) {
     return new Promise((resolve, reject) => {
-      this.firedata.child(followeeKey).push(firebase.auth().currentUser.uid).then(() => {
+      this.firedata.child(followeeKey).child('/followers').push({user_id: firebase.auth().currentUser.uid}).then(() => {
         resolve({success: true});
       })
     });
@@ -31,9 +31,20 @@ export class FollowProvider {
   //should  add record in the follow for the current signed in user
   follow(followeeKey) {
     return new Promise((resolve, reject) => {
-      this.firedata.child(firebase.auth().currentUser.uid).push(followeeKey).then(async () => {
+      this.firedata.child(firebase.auth().currentUser.uid).child('/follow').push({user_id: followeeKey}).then(async () => {
         //and a record for the one he follows under the
-        await this.updateFollowers();
+        await this.updateFollowers(followeeKey);
+        resolve({success: true});
+      })
+    });
+  }
+
+
+  unfollow(followeeKey) {
+    return new Promise((resolve, reject) => {
+      this.firedata.child(firebase.auth().currentUser.uid).child('/follow').push({user_id: followeeKey}).then(async () => {
+        //and a record for the one he follows under the
+        await this.updateFollowers(followeeKey);
         resolve({success: true});
       })
     });
