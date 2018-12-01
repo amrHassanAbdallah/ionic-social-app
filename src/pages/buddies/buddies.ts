@@ -82,20 +82,47 @@ export class BuddiesPage {
     this.followService.follow(userToFollow.uid).then((res: any) => {
       if (res.success) {
         successalert.present();
+        this.navCtrl.pop();
+        this.navCtrl.push(BuddiesPage)
       }
     }).catch((err) => {
       alert(err);
     })
   }
 
+  unfollow(userToFollow) {
+    let successalert = this.alertCtrl.create({
+      title: 'Request sent',
+      subTitle: 'You un followed ' + userToFollow.displayName || userToFollow.username,
+      buttons: ['ok']
+    });
+
+
+    this.followService.unfollow(userToFollow.uid).then((res: any) => {
+      if (res.success) {
+        successalert.present();
+        this.navCtrl.pop();
+        this.navCtrl.push(BuddiesPage)
+
+
+      }
+    }).catch((err) => {
+      alert(err);
+    })
+  }
 
   is_followed(key) {
+    key = this.get_follow_key(key);
+    return key != null;
+  }
+
+  get_follow_key(key) {
     for (var i in key.followers) {
       if (key.followers[i].user_id === firebase.auth().currentUser.uid) {
-        return true;
+        return i;
       }
     }
-    return false;
+    return null;
   }
 
 }

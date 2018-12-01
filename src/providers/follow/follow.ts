@@ -42,10 +42,30 @@ export class FollowProvider {
 
   unfollow(followeeKey) {
     return new Promise((resolve, reject) => {
-      this.firedata.child(firebase.auth().currentUser.uid).child('/follow').push({user_id: followeeKey}).then(async () => {
-        //and a record for the one he follows under the
-        await this.updateFollowers(followeeKey);
-        resolve({success: true});
+      console.log(followeeKey);
+      this.firedata.child(firebase.auth().currentUser.uid).child('/follow').orderByChild('user_id').equalTo(followeeKey).once('value', (snapshot) => {
+        let somekey;
+        for (var key in snapshot.val())
+          somekey = key;
+        console.log(somekey, snapshot.val());
+        this.firedata.child(firebase.auth().currentUser.uid).child('/follow').child(somekey).remove().then(async () => {
+          await this.deleteFollower(followeeKey);
+          resolve({success: true});
+        })
+      })
+    });
+  }
+
+
+  deleteFollower(followeeKey) {
+    return new Promise((resolve, reject) => {
+      this.firedata.child(followeeKey).child('/followers').orderByChild('user_id').equalTo(firebase.auth().currentUser.uid).once('value', (snapshot) => {
+        let somekey;
+        for (var key in snapshot.val())
+          somekey = key;
+        this.firedata.child(followeeKey).child('/followers').child(somekey).remove().then(() => {
+          resolve({success: true});
+        })
       })
     });
   }
