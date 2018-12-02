@@ -11,7 +11,7 @@ import {Events} from "ionic-angular";
 @Injectable()
 export class FollowProvider {
   firedata = firebase.database().ref('/chatusers');
-
+  peopleIFollow;
   constructor(public events: Events) {
     console.log('Hello FollowProvider Provider');
   }
@@ -68,5 +68,23 @@ export class FollowProvider {
         })
       })
     });
+  }
+
+  getAllPeopleThatIFollow() {
+    //retrive all the user ids in follow child for the current user
+    return new Promise((resolve, reject) => {
+      let usersIds = [];
+      let users = [];
+      this.firedata.child(firebase.auth().currentUser.uid).child('/follow').on('value', async (snapshot) => {
+        users = snapshot.val();
+        for (var i in users) {
+          usersIds.push(users[i].user_id);
+        }
+        usersIds.push(firebase.auth().currentUser.uid);
+
+        resolve(usersIds);
+      })
+    });
+
   }
 }
