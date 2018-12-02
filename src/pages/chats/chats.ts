@@ -3,7 +3,6 @@ import {AlertController, Events, IonicPage, NavController, NavParams} from 'ioni
 import {RequestsProvider} from '../../providers/requests/requests';
 import {ChatProvider} from '../../providers/chat/chat';
 import {PostProvider} from "../../providers/post/post";
-import {PostPage} from "../post/post";
 
 /**
  * Generated class for the ChatsPage page.
@@ -77,11 +76,6 @@ export class ChatsPage {
   buddychat(buddy) {
     this.chatservice.initializebuddy(buddy);
     this.navCtrl.push('BuddychatPage');
-  }
-
-  onAddPost() {
-    console.log("test");
-    this.navCtrl.push(PostPage)
   }
 
 

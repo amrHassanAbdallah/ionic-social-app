@@ -6,13 +6,47 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>groups</ion-title>
+  <ion-navbar color="hcolor">
+    <ion-title>Feeds</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list-header>
 
+    <ion-buttons end>
+      <button ion-button (click)="onAddPost()">
+        <ion-icon name="ios-add-circle-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-list-header>
+  <ion-item-sliding *ngFor="let item of myFeed">
+    <ion-item>
+
+      <ion-avatar item-start>
+        <img src="{{item.user.photoURL}}">
+        <span>              {{item.user.displayName || item.user.username}}
+</span>
+      </ion-avatar>
+      <h4>{{item.title}}</h4>
+      <p>{{item.content}}</p>
+      <ion-note item-end>
+        {{item.created_at | date : 'dd/MM/yyyy h.mma'}}
+      </ion-note>
+
+    </ion-item>
+    <ion-item-options>
+      <button ion-button color="secondary" (click)="accept(item)">
+        <ion-icon name="checkmark"></ion-icon>
+        ADD
+      </button>
+      <button ion-button color="danger" (click)="ignore(item)">
+        <ion-icon name="trash"></ion-icon>
+        NOPE
+      </button>
+    </ion-item-options>
+  </ion-item-sliding>
 </ion-content>
