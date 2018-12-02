@@ -14,15 +14,17 @@
 
 
 <ion-content padding>
-  <ion-list-header>
+  <ion-list no-lines>
+    <ion-list-header>
 
-    <ion-buttons end>
-      <button ion-button (click)="onAddPost()">
-        <ion-icon name="ios-add-circle-outline"></ion-icon>
-      </button>
-    </ion-buttons>
+      <ion-buttons end>
+        <button ion-button (click)="onAddPost()">
+          <ion-icon name="ios-add-circle-outline"></ion-icon>
+        </button>
+      </ion-buttons>
 
-  </ion-list-header>
+    </ion-list-header>
+    <ion-list>
   <ion-item-sliding *ngFor="let item of myFeed">
     <ion-item>
 
@@ -41,6 +43,23 @@
 
 
     </ion-item>
+    <ion-item-options side="right" *ngIf="isItMine(item)">
+      <button ion-button color="secondary" (click)="editPost(item)">
+        <ion-icon name="create"></ion-icon>
+        Edit
+      </button>
+    </ion-item-options>
+
+    <ion-item-options side="left" *ngIf="isItMine(item)">
+      <button ion-button color="danger" (click)="removePost(item)">
+        <ion-icon name="trash"></ion-icon>
+        Remove
+      </button>
+    </ion-item-options>
+
 
   </ion-item-sliding>
+    </ion-list>
+  </ion-list>
+
 </ion-content>

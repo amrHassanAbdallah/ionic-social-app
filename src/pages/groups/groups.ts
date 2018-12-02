@@ -77,4 +77,18 @@ export class GroupsPage {
       alert(err);
     })
   }
+
+  isItMine(item) {
+    if (item.user.uid == firebase.auth().currentUser.uid) {
+      return true;
+    }
+  }
+
+  removePost(key: any) {
+
+  }
+
+  editPost(key: any) {
+
+  }
 }
