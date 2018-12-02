@@ -4,6 +4,7 @@ import {PostPage} from "../post/post";
 import {PostProvider} from "../../providers/post/post";
 import {FavoritesProvider} from "../../providers/favorites/favorites";
 import firebase from "firebase";
+import {PostEditComponent} from "../../components/post-edit/post-edit";
 
 /**
  * Generated class for the GroupsPage page.
@@ -102,7 +103,10 @@ export class GroupsPage {
     })
   }
 
-  editPost(key: any) {
+  editPost(item: any) {
+    this.navCtrl.push(PostEditComponent, {
+      item: item
+    });
 
   }
 }

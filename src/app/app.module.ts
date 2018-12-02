@@ -22,12 +22,14 @@ import {PostProvider} from '../providers/post/post';
 import {PostPage} from "../pages/post/post";
 import {FollowProvider} from '../providers/follow/follow';
 import {FavoritesProvider} from '../providers/favorites/favorites';
+import {PostEditComponent} from "../components/post-edit/post-edit";
 
 
 @NgModule({
   declarations: [
     MyApp,
-    PostPage
+    PostPage,
+    PostEditComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import {FavoritesProvider} from '../providers/favorites/favorites';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    PostPage
+    PostPage,
+    PostEditComponent
   ],
   providers: [
     StatusBar,

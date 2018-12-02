@@ -75,4 +75,14 @@ export class PostProvider {
       })
     });
   }
+
+  updatePost(uid: string, value: any) {
+    return new Promise((resolve, reject) => {
+      this.firereq.child(firebase.auth().currentUser.uid).child(uid).update(value).then(() => {
+        resolve({success: true});
+      }).catch((err) => {
+        reject(err);
+      })
+    })
+  }
 }

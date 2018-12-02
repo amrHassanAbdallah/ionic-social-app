@@ -1,0 +1,14 @@
+<ion-content padding>
+  <form #f="ngForm" (ngSubmit)="update(item,f.value)" action="">
+    <ion-item>
+      <ion-label>Title :</ion-label>
+      <ion-input name="title" ngModel placeholder="{{item.title}}" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Content :</ion-label>
+      <ion-textarea name="content" ngModel placeholder="{{item.content}}"></ion-textarea>
+    </ion-item>
+    <button [disabled]="!f.valid" block ion-button type="submit">Update</button>
+  </form>
+</ion-content>
