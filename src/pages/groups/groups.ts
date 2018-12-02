@@ -63,4 +63,18 @@ export class GroupsPage {
       alert(err);
     })
   }
+
+  markAsunFavorite(item) {
+    console.log(item.user.uid, item.uid, item);
+
+    this.favoritesService.unFavorite(item.user.uid, item.uid).then((res: any) => {
+      if (res.success) {
+        console.log("success ");
+        item.isFavoritedByMe = false;
+
+      }
+    }).catch((err) => {
+      alert(err);
+    })
+  }
 }

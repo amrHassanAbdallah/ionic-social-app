@@ -26,7 +26,18 @@ export class FavoritesProvider {
   }
 
   unFavorite(userKey, postKey) {
-
+    return new Promise((resolve, reject) => {
+      console.log(userKey, postKey);
+      this.firedata.child(userKey).child(postKey).child('/favorites').orderByChild('user_id').equalTo(firebase.auth().currentUser.uid).once('value', (snapshot) => {
+        let somekey;
+        console.log(snapshot.val());
+        for (var key in snapshot.val())
+          somekey = key;
+        this.firedata.child(userKey).child(postKey).child('/favorites').child(somekey).remove().then(() => {
+          resolve({success: true});
+        })
+      })
+    });
   }
 
 }

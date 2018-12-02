@@ -48,6 +48,7 @@ export class PostProvider {
     for (let location in peopleIfollow) {
       let postsByThisUser = await this.getPostsAssiciatedWithOnePerson(peopleIfollow[location]);
       for (let post in postsByThisUser) {
+        console.log("Here is the post id ", post);
         postsByThisUser[post].uid = post;
         postsByThisUser[post].user = await this.userService.getuserdetails(peopleIfollow[location]);
         posts.push(postsByThisUser[post]);
