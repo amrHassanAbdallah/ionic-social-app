@@ -85,7 +85,21 @@ export class GroupsPage {
   }
 
   removePost(key: any) {
-
+    console.log("here is the remove post method");
+    this.postService.deletePost(key).then((res: any) => {
+      if (res.success) {
+        let deletedUser = 0;
+        this.myFeed.forEach((item, position) => {
+          if (item.uid == key) {
+            return deletedUser = position;
+          }
+        });
+        console.log("success ", this.myFeed, this.myFeed.indexOf(key), deletedUser);
+        this.myFeed.splice(deletedUser, 1);
+      }
+    }).catch((err) => {
+      alert(err);
+    })
   }
 
   editPost(key: any) {

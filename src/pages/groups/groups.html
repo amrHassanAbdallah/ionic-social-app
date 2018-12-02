@@ -51,7 +51,7 @@
     </ion-item-options>
 
     <ion-item-options side="left" *ngIf="isItMine(item)">
-      <button ion-button color="danger" (click)="removePost(item)">
+      <button ion-button color="danger" (click)="removePost(item.uid)">
         <ion-icon name="trash"></ion-icon>
         Remove
       </button>

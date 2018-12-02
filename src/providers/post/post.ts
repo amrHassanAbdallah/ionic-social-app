@@ -67,4 +67,12 @@ export class PostProvider {
       })
     });
   }
+
+  deletePost(uid) {
+    return new Promise((resolve, reject) => {
+      this.firereq.child(firebase.auth().currentUser.uid).child(uid).remove().then(() => {
+        resolve({success: true});
+      })
+    });
+  }
 }
