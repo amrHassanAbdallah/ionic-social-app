@@ -21,6 +21,7 @@ import {ChatProvider} from '../providers/chat/chat';
 import {PostProvider} from '../providers/post/post';
 import {PostPage} from "../pages/post/post";
 import {FollowProvider} from '../providers/follow/follow';
+import {FavoritesProvider} from '../providers/favorites/favorites';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import {FollowProvider} from '../providers/follow/follow';
     RequestsProvider,
     ChatProvider,
     PostProvider,
-    FollowProvider
+    FollowProvider,
+    FavoritesProvider
   ]
 })
 export class AppModule {}

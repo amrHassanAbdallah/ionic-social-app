@@ -31,22 +31,16 @@
         <span>              {{item.user.displayName || item.user.username}}
 </span>
       </ion-avatar>
-      <h4>{{item.title}}</h4>
+      <ion-note color="">   {{item.created_at | date : 'dd/MM/yyyy h.mma'}}</ion-note>
+      <h4>{{item.title}} </h4>
       <p>{{item.content}}</p>
-      <ion-note item-end>
-        {{item.created_at | date : 'dd/MM/yyyy h.mma'}}
-      </ion-note>
+      <ion-icon item-end ios="ios-heart" md="ios-heart-outline" *ngIf="!item.isFavoritedByMe"
+                (click)="markAsFavorite(item)"></ion-icon>
+      <ion-icon item-end ios="ios-heart" md="ios-heart" *ngIf="item.isFavoritedByMe"
+                (click)="markAsFavorite(item)"></ion-icon>
+
 
     </ion-item>
-    <ion-item-options>
-      <button ion-button color="secondary" (click)="accept(item)">
-        <ion-icon name="checkmark"></ion-icon>
-        ADD
-      </button>
-      <button ion-button color="danger" (click)="ignore(item)">
-        <ion-icon name="trash"></ion-icon>
-        NOPE
-      </button>
-    </ion-item-options>
+
   </ion-item-sliding>
 </ion-content>

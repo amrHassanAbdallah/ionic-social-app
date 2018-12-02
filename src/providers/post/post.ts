@@ -20,8 +20,7 @@ export class PostProvider {
   }
 
   async getAll() {
-    let allmyrequests;
-    var myrequests = [];
+
     // should get all people this user follows
     let peopleIfollow = await this.followService.getAllPeopleThatIFollow();
     this.myFeed = await this.getAllPostsForPeopleILike(peopleIfollow);
@@ -39,9 +38,6 @@ export class PostProvider {
       this.firereq.child(personKey).once('value', s => {
         console.log(s.val());
         let result = s.val();
-        if (result) {
-          result = Object.values(result);
-        }
         resolve(result);
       })
     })
@@ -52,6 +48,7 @@ export class PostProvider {
     for (let location in peopleIfollow) {
       let postsByThisUser = await this.getPostsAssiciatedWithOnePerson(peopleIfollow[location]);
       for (let post in postsByThisUser) {
+        postsByThisUser[post].uid = post;
         postsByThisUser[post].user = await this.userService.getuserdetails(peopleIfollow[location]);
         posts.push(postsByThisUser[post]);
       }

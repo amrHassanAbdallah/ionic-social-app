@@ -19,10 +19,10 @@ export class ChatsPage {
   myrequests;
   myFeed;
   myfriends;
+  friends = "friendsList";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public requestservice: RequestsProvider,
               public events: Events, public alertCtrl: AlertController, public chatservice: ChatProvider, public postService: PostProvider) {
-    this.friends = "friendsList";
 
 
   }
@@ -31,7 +31,6 @@ export class ChatsPage {
   ionViewWillEnter() {
     this.requestservice.getmyrequests();
     this.requestservice.getmyfriends();
-    this.postService.getAll();
     this.events.subscribe('gotrequests', () => {
       this.myrequests = [];
       this.myrequests = this.requestservice.userdetails;
@@ -41,9 +40,6 @@ export class ChatsPage {
       this.myfriends = this.requestservice.myfriends;
     });
 
-    this.events.subscribe('posts', () => {
-      this.myFeed = this.postService.myFeed;
-    })
   }
 
   ionViewDidLeave() {

@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {Events, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {PostPage} from "../post/post";
 import {PostProvider} from "../../providers/post/post";
+import {FavoritesProvider} from "../../providers/favorites/favorites";
+import firebase from "firebase";
 
 /**
  * Generated class for the GroupsPage page.
@@ -18,7 +20,7 @@ import {PostProvider} from "../../providers/post/post";
 export class GroupsPage {
   myFeed;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public postService: PostProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events, public postService: PostProvider, public favoritesService: FavoritesProvider) {
   }
 
   ionViewDidLoad() {
@@ -29,6 +31,9 @@ export class GroupsPage {
     this.postService.getAll();
     this.events.subscribe('posts', () => {
       this.myFeed = this.postService.myFeed;
+      this.myFeed.map(post => {
+        this.isItFavoritedByMe(post)
+      })
     })
   }
 
@@ -37,4 +42,25 @@ export class GroupsPage {
     this.navCtrl.push(PostPage)
   }
 
+  isItFavoritedByMe(post) {
+    //loop throw the the post favorites and check if there is a user id equal to mine
+    for (let location in post.favorites) {
+      if (post.favorites[location].user_id == firebase.auth().currentUser.uid) {
+        post.isFavoritedByMe = true;
+      }
+    }
+  }
+
+  markAsFavorite(item: any) {
+    console.log(item.user.uid, item.uid);
+    this.favoritesService.favorite(item.user.uid, item.uid).then((res: any) => {
+      if (res.success) {
+        console.log("success ");
+        item.isFavoritedByMe = true;
+
+      }
+    }).catch((err) => {
+      alert(err);
+    })
+  }
 }
