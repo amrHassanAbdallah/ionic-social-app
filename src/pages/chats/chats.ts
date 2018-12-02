@@ -22,6 +22,9 @@ export class ChatsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public requestservice: RequestsProvider,
               public events: Events, public alertCtrl: AlertController, public chatservice: ChatProvider, public postService: PostProvider) {
+    this.friends = "friendsList";
+
+
   }
 
 

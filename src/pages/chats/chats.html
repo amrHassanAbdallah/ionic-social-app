@@ -19,37 +19,83 @@
 
 
 <ion-content padding>
-  <ion-list no-lines>
-    <ion-list-header>
-      Requests
-    </ion-list-header>
-    <ion-item-sliding *ngFor="let item of myrequests">
-      <ion-item>
-        <ion-avatar item-left>
-          <img src="{{item.photoURL}}">
-        </ion-avatar>
-        <h4>{{item.displayName}}</h4>
-      </ion-item>
-      <ion-item-options>
-        <button ion-button color="secondary" (click)="accept(item)">
-          <ion-icon name="checkmark"></ion-icon>
-          ADD
-        </button>
-        <button ion-button color="danger" (click)="ignore(item)">
-          <ion-icon name="trash"></ion-icon>
-          NOPE
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+  <div padding>
 
-    <ion-list-header>
-      Friends
-    </ion-list-header>
-    <ion-item *ngFor="let item of myfriends" (click)="buddychat(item)">
-      <ion-avatar item-left>
-        <img src={{item.photoURL}}>
-      </ion-avatar>
-      <h3>{{item.displayName}}</h3>
-    </ion-item>
-  </ion-list>
+    <ion-segment [(ngModel)]="friends" color="hcolor">
+      <ion-segment-button value="friendsList">
+        Friends
+      </ion-segment-button>
+      <ion-segment-button value="friendsReq">
+        Friends Requests
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="friends">
+    <ion-list *ngSwitchCase="'friendsList'">
+      <ion-item *ngFor="let item of myfriends" (click)="buddychat(item)">
+        <ion-thumbnail item-start>
+          <img src="{{item.photoURL}}">
+        </ion-thumbnail>
+        <h3>{{item.displayName}}</h3>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'friendsReq'">
+
+      <ion-item-sliding *ngFor="let item of myrequests">
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{item.photoURL}}">
+          </ion-avatar>
+          <h4>{{item.displayName}}</h4>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="secondary" (click)="accept(item)">
+            <ion-icon name="checkmark"></ion-icon>
+            ADD
+          </button>
+          <button ion-button color="danger" (click)="ignore(item)">
+            <ion-icon name="trash"></ion-icon>
+            NOPE
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </div>
+  <!--
+    <ion-list no-lines>
+      <ion-list-header>
+        Requests
+      </ion-list-header>
+      <ion-item-sliding *ngFor="let item of myrequests">
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{item.photoURL}}">
+          </ion-avatar>
+          <h4>{{item.displayName}}</h4>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="secondary" (click)="accept(item)">
+            <ion-icon name="checkmark"></ion-icon>
+            ADD
+          </button>
+          <button ion-button color="danger" (click)="ignore(item)">
+            <ion-icon name="trash"></ion-icon>
+            NOPE
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+      <ion-list-header>
+        Friends
+      </ion-list-header>
+      <ion-item *ngFor="let item of myfriends" (click)="buddychat(item)">
+        <ion-avatar item-left>
+          <img src={{item.photoURL}}>
+        </ion-avatar>
+        <h3>{{item.displayName}}</h3>
+      </ion-item>
+    </ion-list>
+  -->
 </ion-content>
