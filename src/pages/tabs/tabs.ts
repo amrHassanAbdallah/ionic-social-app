@@ -17,6 +17,7 @@ export class TabsPage {
   tab1: string = "ChatsPage";
   tab2: string = "GroupsPage";
   tab3: string = "ProfilePage";
+  tab4: string = "NotificationPage";
 
   constructor() {
   }
