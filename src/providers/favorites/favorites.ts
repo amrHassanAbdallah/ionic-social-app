@@ -24,7 +24,8 @@ export class FavoritesProvider {
         this.notificationService.store(userKey, {
           user_id: firebase.auth().currentUser.uid,
           model_id: '',
-          model_type: ''
+          model_type: '',
+          seen: false
         });
         resolve({success: true});
       })

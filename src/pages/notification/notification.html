@@ -14,5 +14,19 @@
 
 
 <ion-content padding>
+  <ion-list no-lines>
+    <ion-list>
+      <ion-item-sliding *ngFor="let item of myNotification">
+        <ion-item>
 
+          <ion-avatar item-start>
+            <img src="{{item.user.photoURL}}">
+            <span>              {{item.user.displayName || item.user.username}}
+</span>
+          </ion-avatar>
+
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-list>
 </ion-content>

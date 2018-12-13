@@ -19,7 +19,7 @@ export class TabsPage {
   tab2: string = "GroupsPage";
   tab3: string = "ProfilePage";
   tab4: string = "NotificationPage";
-  notification_num = 0;
+  notification_num;
 
   constructor(public notificationService: NotificationsProvider) {
     notificationService.count_my_notification().then(numb => {
