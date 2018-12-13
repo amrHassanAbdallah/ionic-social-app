@@ -24,6 +24,7 @@
     "@ionic-native/file": "^4.17.0",
     "@ionic-native/file-chooser": "^4.17.0",
     "@ionic-native/file-path": "^4.17.0",
+    "@ionic-native/firebase": "^4.18.0",
     "@ionic-native/image-picker": "^4.17.0",
     "@ionic-native/splash-screen": "~4.17.0",
     "@ionic-native/status-bar": "~4.17.0",
@@ -35,13 +36,14 @@
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-filechooser": "1.0.1",
     "cordova-plugin-filepath": "1.4.2",
+    "cordova-plugin-firebase": "2.0.5",
     "cordova-plugin-ionic-keyboard": "^2.1.3",
     "cordova-plugin-ionic-webview": "^2.2.5",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-telerik-imagepicker": "2.2.2",
     "cordova-plugin-whitelist": "^1.3.3",
-    "firebase": "^5.6.0",
+    "firebase": "^5.7.0",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "rxjs": "5.5.11",
@@ -66,7 +68,8 @@
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-firebase": {}
     },
     "platforms": [
       "browser",

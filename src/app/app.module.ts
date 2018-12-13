@@ -11,6 +11,8 @@ import {environment} from '../environments';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireModule} from 'angularfire2';
+import {AngularFirestoreModule} from 'angularfire2/firestore';
+import {Firebase} from '@ionic-native/firebase';
 
 import {MyApp} from './app.component';
 import {AuthProvider} from '../providers/auth/auth';
@@ -23,6 +25,7 @@ import {PostPage} from "../pages/post/post";
 import {FollowProvider} from '../providers/follow/follow';
 import {FavoritesProvider} from '../providers/favorites/favorites';
 import {PostEditComponent} from "../components/post-edit/post-edit";
+import {NotificationsProvider} from '../providers/notifications/notifications';
 
 
 @NgModule({
@@ -34,7 +37,8 @@ import {PostEditComponent} from "../components/post-edit/post-edit";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp, {tabsPlacement: 'top'}),
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -58,7 +62,9 @@ import {PostEditComponent} from "../components/post-edit/post-edit";
     ChatProvider,
     PostProvider,
     FollowProvider,
-    FavoritesProvider
+    FavoritesProvider,
+    NotificationsProvider,
+    Firebase,
   ]
 })
 export class AppModule {}
