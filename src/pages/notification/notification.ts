@@ -31,6 +31,17 @@ export class NotificationPage {
         object.uid = i;
         object.user = await this.userService.getuserdetails(object.user_id);
         object.user.photoURL = await this.imageHandler.getAuserImage(object.user_id);
+        switch (object.model_type) {
+          case "favorite":
+            object.message = `${object.user.displayName} favorite  your  post . `;
+            break;
+          case "unfavorite":
+            object.message = `${object.user.displayName} un favorite  your  post . `;
+            break;
+          case "follow":
+            object.message = `${object.user.displayName} followed you . `;
+            break;
+        }
         localNotifications.push(object);
       }
       this.myNotification = localNotifications;

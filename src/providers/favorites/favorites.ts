@@ -23,8 +23,8 @@ export class FavoritesProvider {
         //and a record for the one he follows under the
         this.notificationService.store(userKey, {
           user_id: firebase.auth().currentUser.uid,
-          model_id: '',
-          model_type: '',
+          model_id: postKey,
+          model_type: 'favorite',
           seen: false
         });
         resolve({success: true});
@@ -41,6 +41,12 @@ export class FavoritesProvider {
         for (var key in snapshot.val())
           somekey = key;
         this.firedata.child(userKey).child(postKey).child('/favorites').child(somekey).remove().then(() => {
+          this.notificationService.store(userKey, {
+            user_id: firebase.auth().currentUser.uid,
+            model_id: postKey,
+            model_type: 'unfavorite',
+            seen: false
+          });
           resolve({success: true});
         })
       })

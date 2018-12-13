@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import firebase from "firebase";
 import {Events} from "ionic-angular";
+import {NotificationsProvider} from "../notifications/notifications";
 
 /*
   Generated class for the FollowProvider provider.
@@ -12,7 +13,8 @@ import {Events} from "ionic-angular";
 export class FollowProvider {
   firedata = firebase.database().ref('/chatusers');
   peopleIFollow;
-  constructor(public events: Events) {
+
+  constructor(public events: Events, public notificationService: NotificationsProvider) {
     console.log('Hello FollowProvider Provider');
   }
 
@@ -33,6 +35,12 @@ export class FollowProvider {
     return new Promise((resolve, reject) => {
       this.firedata.child(firebase.auth().currentUser.uid).child('/follow').push({user_id: followeeKey}).then(async () => {
         //and a record for the one he follows under the
+        this.notificationService.store(followeeKey, {
+          user_id: firebase.auth().currentUser.uid,
+          model_id: firebase.auth().currentUser.uid,
+          model_type: 'follow',
+          seen: false
+        });
         await this.updateFollowers(followeeKey);
         resolve({success: true});
       })
