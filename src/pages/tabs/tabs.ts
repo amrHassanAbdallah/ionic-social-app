@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
+import {NotificationsProvider} from "../../providers/notifications/notifications";
 
 /**
  * Generated class for the TabsPage page.
@@ -17,8 +18,13 @@ export class TabsPage {
   tab1: string = "ChatsPage";
   tab2: string = "GroupsPage";
   tab3: string = "ProfilePage";
+  tab4: string = "NotificationPage";
+  notification_num = 0;
 
-  constructor() {
+  constructor(public notificationService: NotificationsProvider) {
+    notificationService.count_my_notification().then(numb => {
+      this.notification_num = numb;
+    })
   }
 
 }
