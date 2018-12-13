@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Events} from 'ionic-angular';
 import {connreq} from '../../models/interfaces/request';
 import {UserProvider} from '../user/user';
+import {ImghandlerProvider} from '../imghandler/imghandler';
 import firebase from 'firebase';
 
 /*
@@ -18,7 +19,7 @@ export class RequestsProvider {
   userdetails;
   myfriends;
 
-  constructor(public userservice: UserProvider, public events: Events) {
+  constructor(public userservice: UserProvider, public events: Events, public imgService: ImghandlerProvider) {
 
   }
 
@@ -48,6 +49,7 @@ export class RequestsProvider {
         for (var j in myrequests)
           for (var key in allusers) {
             if (myrequests[j] === allusers[key].uid) {
+              //allusers[key].photoURL = this.imgService.getAuserImage(allusers[key].uid);
               this.userdetails.push(allusers[key]);
             }
           }
@@ -108,6 +110,8 @@ export class RequestsProvider {
         for (var j in friendsuid)
           for (var key in users) {
             if (friendsuid[j] === users[key].uid) {
+              //  users[key].photoURL = this.imgService.getAuserImage(users[key].uid);
+
               this.myfriends.push(users[key]);
             }
           }

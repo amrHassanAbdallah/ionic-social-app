@@ -3,6 +3,7 @@ import firebase from "firebase";
 import {Events} from "ionic-angular";
 import {UserProvider} from "../user/user";
 import {FollowProvider} from "../follow/follow";
+import {ImghandlerProvider} from "../imghandler/imghandler";
 
 /*
   Generated class for the PostProvider provider.
@@ -15,7 +16,7 @@ export class PostProvider {
   firereq = firebase.database().ref('/posts');
   myFeed;
 
-  constructor(public events: Events, public userService: UserProvider, public followService: FollowProvider) {
+  constructor(public events: Events, public userService: UserProvider, public followService: FollowProvider, public imgHandlerService: ImghandlerProvider) {
     console.log('Hello PostProvider Provider');
   }
 
@@ -51,6 +52,7 @@ export class PostProvider {
         console.log("Here is the post id ", post);
         postsByThisUser[post].uid = post;
         postsByThisUser[post].user = await this.userService.getuserdetails(peopleIfollow[location]);
+        postsByThisUser[post].user.photoURL = await this.imgHandlerService.getAuserImage(postsByThisUser[post].user.uid);
         posts.push(postsByThisUser[post]);
       }
     }

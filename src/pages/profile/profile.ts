@@ -1,5 +1,5 @@
 import {Component, NgZone} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {ImghandlerProvider} from '../../providers/imghandler/imghandler';
 import {UserProvider} from '../../providers/user/user';
 import firebase from 'firebase';
@@ -18,10 +18,11 @@ import firebase from 'firebase';
 export class ProfilePage {
   avatar: string;
   displayName: string;
+  user;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public userservice: UserProvider, public zone: NgZone, public alertCtrl: AlertController,
-              public imghandler: ImghandlerProvider) {
+              public imghandler: ImghandlerProvider, public loadingCtrl: LoadingController) {
   }
 
   ionViewWillEnter() {
@@ -31,19 +32,24 @@ export class ProfilePage {
   loaduserdetails() {
     this.userservice.getuserdetails().then((res: any) => {
       this.displayName = res.displayName;
-      this.zone.run(() => {
-        this.avatar = res.photoURL;
-      })
+      this.avatar = firebase.auth().currentUser.photoURL;
+
     })
   }
 
   editimage() {
+    let loader = this.loadingCtrl.create({
+      content: 'Please wait'
+    });
+    loader.present();
     let statusalert = this.alertCtrl.create({
       buttons: ['okay']
     });
     this.imghandler.uploadimage().then((url: any) => {
       this.userservice.updateimage(url).then((res: any) => {
         if (res.success) {
+          loader.dismiss();
+
           statusalert.setTitle('Updated');
           statusalert.setSubTitle('Your profile pic has been changed successfully!!');
           statusalert.present();
@@ -52,6 +58,7 @@ export class ProfilePage {
           })
         }
       }).catch((err) => {
+        loader.dismiss();
         statusalert.setTitle('Failed');
         statusalert.setSubTitle('Your profile pic was not changed');
         statusalert.present();
