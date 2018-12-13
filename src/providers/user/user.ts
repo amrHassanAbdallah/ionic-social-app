@@ -93,6 +93,11 @@ export class UserProvider {
           photoURL: imageurl,
           uid: firebase.auth().currentUser.uid
         }).then(() => {
+          console.log({
+            displayName: this.afireauth.auth.currentUser.displayName,
+            photoURL: imageurl,
+            uid: firebase.auth().currentUser.uid
+          });
           resolve({success: true});
         }).catch((err) => {
           reject(err);

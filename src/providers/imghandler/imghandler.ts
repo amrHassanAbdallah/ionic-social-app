@@ -28,12 +28,8 @@ export class ImghandlerProvider {
               reader.onloadend = (evt: any) => {
                 var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
                 var imageStore = this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid);
-                imageStore.put(imgBlob).then((res) => {
-                  this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid).getDownloadURL().then((url) => {
-                    resolve(url);
-                  }).catch((err) => {
-                    reject(err);
-                  })
+                imageStore.put(imgBlob).then(async (res) => {
+                  resolve(await this.getAuserImage(firebase.auth().currentUser.uid));
                 }).catch((err) => {
                   reject(err);
                 })
@@ -46,4 +42,14 @@ export class ImghandlerProvider {
     return promise;
   }
 
+  getAuserImage(userId) {
+    return new Promise((resolve2, reject2) => {
+      this.firestore.ref('/profileimages').child(userId).getDownloadURL().then((url) => {
+        resolve2(url);
+      }).catch((err) => {
+        reject2(err);
+      })
+    })
+
+  }
 }
