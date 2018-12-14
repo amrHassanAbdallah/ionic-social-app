@@ -44,6 +44,15 @@ export class PostProvider {
     })
   }
 
+  getSpecificPostForUser(user_id, post_id) {
+    return new Promise((resolve, reject) => {
+      this.firereq.child(user_id).child(post_id).once('value', s => {
+        resolve(s.val());
+      })
+    });
+
+  }
+
   async getAllPostsForPeopleILike(peopleIfollow) {
     let posts = [];
     for (let location in peopleIfollow) {

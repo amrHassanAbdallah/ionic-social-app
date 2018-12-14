@@ -16,7 +16,7 @@ import firebase from 'firebase';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
-  avatar: string;
+  avatar;
   displayName: string;
   user: any;
   editable = true;

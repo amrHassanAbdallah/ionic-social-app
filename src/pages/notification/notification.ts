@@ -4,7 +4,6 @@ import {NotificationsProvider} from "../../providers/notifications/notifications
 import firebase from "firebase";
 import {UserProvider} from "../../providers/user/user";
 import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
-import {PostEditComponent} from "../../components/post-edit/post-edit";
 import {ProfilePage} from "../profile/profile";
 
 /**
@@ -58,13 +57,15 @@ export class NotificationPage {
   showTargetedNotificationPage(notification) {
     switch (notification.model_type) {
       case "favorite":
-        this.navCtrl.push(PostEditComponent, {
-          item: item
+        this.navCtrl.push('PostSinglePage', {
+          post_id: notification.model_id,
+          user_id: firebase.auth().currentUser.uid
         });
         break;
       case "unfavorite":
-        this.navCtrl.push(PostEditComponent, {
-          item: item
+        this.navCtrl.push('PostSinglePage', {
+          post_id: notification.model_id,
+          user_id: firebase.auth().currentUser.uid
         });
         break;
       case "follow":
