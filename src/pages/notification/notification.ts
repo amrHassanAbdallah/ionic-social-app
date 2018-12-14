@@ -4,6 +4,8 @@ import {NotificationsProvider} from "../../providers/notifications/notifications
 import firebase from "firebase";
 import {UserProvider} from "../../providers/user/user";
 import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
+import {PostEditComponent} from "../../components/post-edit/post-edit";
+import {ProfilePage} from "../profile/profile";
 
 /**
  * Generated class for the NotificationPage page.
@@ -50,6 +52,31 @@ export class NotificationPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NotificationPage');
+  }
+
+  showTargetedNotificationPage(notification) {
+    switch (notification.model_type) {
+      case "favorite":
+        this.navCtrl.push(PostEditComponent, {
+          item: item
+        });
+        break;
+      case "unfavorite":
+        this.navCtrl.push(PostEditComponent, {
+          item: item
+        });
+        break;
+      case "follow":
+        console.log("yes indeed I follow ", notification.user_id);
+        this.userService.getuserdetails(notification.model_id).then(user => {
+          console.log("I follow this man ", user);
+          this.navCtrl.push('ProfilePage', {
+            user: user
+          });
+        })
+
+    }
+
   }
 
 }

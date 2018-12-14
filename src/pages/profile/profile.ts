@@ -18,23 +18,37 @@ import firebase from 'firebase';
 export class ProfilePage {
   avatar: string;
   displayName: string;
-  user;
+  user: any;
+  editable: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public userservice: UserProvider, public zone: NgZone, public alertCtrl: AlertController,
               public imghandler: ImghandlerProvider, public loadingCtrl: LoadingController) {
+    this.user = navParams.get('user');
+    if (this.user) {
+      this.editable = false
+    }
+    console.log("User is ", this.user);
   }
 
   ionViewWillEnter() {
-    this.loaduserdetails();
+    if (!this.user) {
+      this.loaduserdetails();
+    } else {
+      this.setUserDetails(this.user)
+    }
   }
 
   loaduserdetails() {
     this.userservice.getuserdetails().then((res: any) => {
-      this.displayName = res.displayName;
-      this.avatar = firebase.auth().currentUser.photoURL;
+      this.setUserDetails(res);
 
     })
+  }
+
+  setUserDetails(user) {
+    this.displayName = user.displayName;
+    this.avatar = this.imghandler.getAuserImage(user.uid);
   }
 
   editimage() {
