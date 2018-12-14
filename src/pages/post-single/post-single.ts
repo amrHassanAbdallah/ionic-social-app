@@ -85,7 +85,7 @@ export class PostSinglePage {
 
   markAsunFavorite() {
 
-    this.favoritesService.favorite(this.user_id, this.post_id).then((res: any) => {
+    this.favoritesService.unFavorite(this.user_id, this.post_id).then((res: any) => {
       if (res.success) {
         console.log("success ");
         this.is_fav_by_me = false;
