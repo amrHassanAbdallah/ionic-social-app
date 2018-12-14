@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="hcolor">
-    <ion-title text-sm-center>{{post.title}}</ion-title>
+    <ion-title text-sm-center>{{post_title}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -22,20 +22,28 @@
         <img src="{{user_image}}">
       </ion-avatar>
       <h2>{{user_name}}</h2>
-      <p>on   {{post.created_at | date : 'dd/MM/yyyy h.mma'}}</p>
+      <p>on   {{created_at}}</p>
     </ion-item>
 
     <img src="../../assets/imgs/download.jpeg">
 
     <ion-card-content>
-      <p>{{post.content}}</p>
+      <p>{{post_content}}</p>
     </ion-card-content>
 
     <ion-row>
       <ion-col>
-        <button ion-button color="hcolor" clear small icon-start>
+
+        <button *ngIf="!is_fav_by_me"
+                (click)="markAsFavorite()" ion-button color="#1c4a49" clear small icon-start>
           <ion-icon name='thumbs-up'></ion-icon>
-          12 Likes
+          {{total_favorite_count}} Likes
+        </button>
+
+        <button *ngIf="is_fav_by_me"
+                (click)="markAsunFavorite()" ion-button color="hcolor" clear small icon-start>
+          <ion-icon name='thumbs-up'></ion-icon>
+          {{total_favorite_count}} Likes
         </button>
       </ion-col>
 
