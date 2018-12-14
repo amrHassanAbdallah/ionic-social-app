@@ -19,12 +19,13 @@ export class ProfilePage {
   avatar: string;
   displayName: string;
   user: any;
-  editable: boolean;
+  editable = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public userservice: UserProvider, public zone: NgZone, public alertCtrl: AlertController,
               public imghandler: ImghandlerProvider, public loadingCtrl: LoadingController) {
     this.user = navParams.get('user');
+    console.log(this.user, "test00");
     if (this.user) {
       this.editable = false
     }
@@ -41,6 +42,7 @@ export class ProfilePage {
 
   loaduserdetails() {
     this.userservice.getuserdetails().then((res: any) => {
+      res.uid = firebase.auth().currentUser.uid;
       this.setUserDetails(res);
 
     })
@@ -48,7 +50,9 @@ export class ProfilePage {
 
   setUserDetails(user) {
     this.displayName = user.displayName;
-    this.avatar = this.imghandler.getAuserImage(user.uid);
+    this.imghandler.getAuserImage(user.uid).then(imgUrl => {
+      this.avatar = imgUrl;
+    });
   }
 
   editimage() {

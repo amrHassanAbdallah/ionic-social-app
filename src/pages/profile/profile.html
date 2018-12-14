@@ -6,26 +6,29 @@
 <ion-header>
 
   <ion-navbar color="hcolor">
-    <ion-title>Profile</ion-title>
+    <ion-title *ngIf="!editable">{{user.displayName.toUpperCase() + "'s"}} Profile</ion-title>
+    <ion-title *ngIf="editable"> Profile</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-  <div class="profile-image" (click)="editimage()">
-    <img src="{{avatar}}">
+  <div class="profile-image">
+    <img src="{{avatar}}" *ngIf="editable" (click)="editimage()">
+    <img src="{{avatar}}" *ngIf="!editable">
     <!--    <span>{{user.displayName || "Not  defined"}}</span>
         <span>{{user.photoURL}}</span>-->
   </div>
   <div>
-    <h2 (click)="editname()">{{displayName}}</h2>
+    <h2 *ngIf="editable" (click)="editname()">{{displayName}}</h2>
+    <h2 *ngIf="!editable">{{displayName}}</h2>
   </div>
-  <div>
+  <div *ngIf="editable">
     Tap on your pic or nick name to change it.
   </div>
   <div class="spacer" style="height: 10px;"></div>
   <div>
-    <button ion-button round outline color="danger" (click)="logout()">Logout</button>
+    <button ion-button round outline color="danger" *ngIf="editable" (click)="logout()">Logout</button>
   </div>
 </ion-content>

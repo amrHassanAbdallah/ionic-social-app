@@ -41,6 +41,7 @@ export class NotificationPage {
             object.message = `${object.user.displayName} un favorite  your  post . `;
             break;
           case "follow":
+            console.log("follow");
             object.message = `${object.user.displayName} followed you . `;
             break;
         }
