@@ -113,6 +113,7 @@ export class PostSinglePage {
     for (let location in     post.favorites) {
       if (post.favorites[location].user_id == firebase.auth().currentUser.uid) {
         this.is_fav_by_me = true;
+        break;
       }
     }
   }
