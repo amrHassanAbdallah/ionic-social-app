@@ -26,7 +26,7 @@
     </ion-list-header>
     <ion-list>
   <ion-item-sliding *ngFor="let item of myFeed">
-    <ion-item>
+    <ion-item (click)="viewPostDetails(item)">
 
       <ion-avatar item-start>
         <img src="{{item.user.photoURL}}">

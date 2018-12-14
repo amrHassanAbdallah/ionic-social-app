@@ -109,4 +109,12 @@ export class GroupsPage {
     });
 
   }
+
+  viewPostDetails(item) {
+    this.navCtrl.push('PostSinglePage', {
+      post: item,
+      post_id: item.uid,
+      user_id: item.user.uid
+    });
+  }
 }

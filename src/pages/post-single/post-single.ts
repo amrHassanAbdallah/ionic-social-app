@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserProvider} from "../../providers/user/user";
 import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
 import {FavoritesProvider} from "../../providers/favorites/favorites";
+import firebase from "firebase";
 
 /**
  * Generated class for the PostSinglePage page.
@@ -50,6 +51,7 @@ export class PostSinglePage {
     this.post_title = this.post_id.title;
     this.created_at = (new Date(this.post.created_at)).toDateString();
     this.post_content = this.post.content;
+    this.isItFavoritedByMe();
     this.setUpPostOwner();
     this.countFavorites();
   }
@@ -105,4 +107,13 @@ export class PostSinglePage {
     this.total_favorite_count = numberOfFavorites;
   }
 
+  isItFavoritedByMe() {
+    let post = this.post;
+    //loop throw the the post favorites and check if there is a user id equal to mine
+    for (let location in     post.favorites) {
+      if (post.favorites[location].user_id == firebase.auth().currentUser.uid) {
+        this.is_fav_by_me = true;
+      }
+    }
+  }
 }
