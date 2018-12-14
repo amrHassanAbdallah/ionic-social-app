@@ -5,6 +5,7 @@ import firebase from "firebase";
 import {UserProvider} from "../../providers/user/user";
 import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
 import {ProfilePage} from "../profile/profile";
+import {PostProvider} from "../../providers/post/post";
 
 /**
  * Generated class for the NotificationPage page.
@@ -21,7 +22,7 @@ import {ProfilePage} from "../profile/profile";
 export class NotificationPage {
   myNotification = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider, public postService: PostProvider) {
   }
 
   ionViewWillEnter() {
@@ -57,15 +58,21 @@ export class NotificationPage {
   showTargetedNotificationPage(notification) {
     switch (notification.model_type) {
       case "favorite":
-        this.navCtrl.push('PostSinglePage', {
-          post_id: notification.model_id,
-          user_id: firebase.auth().currentUser.uid
+        this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, notification.model_id).then(post => {
+          this.navCtrl.push('PostSinglePage', {
+            post_id: notification.model_id,
+            user_id: firebase.auth().currentUser.uid,
+            post
+          });
         });
         break;
       case "unfavorite":
-        this.navCtrl.push('PostSinglePage', {
-          post_id: notification.model_id,
-          user_id: firebase.auth().currentUser.uid
+        this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, notification.model_id).then(post => {
+          this.navCtrl.push('PostSinglePage', {
+            post_id: notification.model_id,
+            user_id: firebase.auth().currentUser.uid,
+            post
+          });
         });
         break;
       case "follow":
