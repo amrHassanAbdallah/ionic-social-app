@@ -55,37 +55,46 @@ export class NotificationPage {
     console.log('ionViewDidLoad NotificationPage');
   }
 
-  showTargetedNotificationPage(notification) {
-    switch (notification.model_type) {
-      case "favorite":
-        this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, notification.model_id).then(post => {
-          this.navCtrl.push('PostSinglePage', {
-            post_id: notification.model_id,
-            user_id: firebase.auth().currentUser.uid,
-            post
-          });
-        });
-        break;
-      case "unfavorite":
-        this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, notification.model_id).then(post => {
-          this.navCtrl.push('PostSinglePage', {
-            post_id: notification.model_id,
-            user_id: firebase.auth().currentUser.uid,
-            post
-          });
-        });
-        break;
-      case "follow":
-        console.log("yes indeed I follow ", notification.user_id);
-        this.userService.getuserdetails(notification.model_id).then(user => {
-          console.log("I follow this man ", user);
-          this.navCtrl.push('ProfilePage', {
-            user: user
-          });
-        })
-
-    }
-
+  showTargetedNotificationPage(notification: { user_id: string, model_id: string, model_type: string, seen: boolean }) {
+    let page = this.getTargetedPage(notification.model_type);
+    this.getPageRequiredObject(page, notification.model_id).then(required_obj => {
+      this.navCtrl.push(page, required_obj);
+    });
   }
 
+  private getTargetedPage(model_type: string) {
+    let targeted_model;
+    switch (model_type) {
+      case "favorite":
+      case "unfavorite":
+        targeted_model = 'PostSinglePage';
+        break;
+      case "follow":
+        targeted_model = 'ProfilePage';
+        break;
+    }
+    return targeted_model;
+  }
+
+  private getPageRequiredObject(page: string, model_id: string) {
+    return new Promise(async (resolve, reject) => {
+      let required_obj;
+      switch (page) {
+        case "PostSinglePage":
+          required_obj = {
+            post_id: model_id,
+            user_id: firebase.auth().currentUser.uid,
+            post: await this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, model_id)
+          };
+          break;
+        case "ProfilePage":
+          required_obj = {
+            user: await this.userService.getuserdetails(model_id)
+          };
+          break;
+      }
+      resolve(required_obj)
+    });
+
+  }
 }
