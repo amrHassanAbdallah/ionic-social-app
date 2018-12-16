@@ -40,6 +40,9 @@ export class NotificationPage {
           case "unfavorite":
             object.message = `${object.user.displayName} un favorite  your  post . `;
             break;
+          case "post":
+            object.message = `${object.user.displayName} created a new post  . `;
+            break;
           case "follow":
             console.log("follow");
             object.message = `${object.user.displayName} followed you . `;
@@ -62,7 +65,7 @@ export class NotificationPage {
     }
 
     let page = this.getTargetedPage(notification.model_type);
-    this.getPageRequiredObject(page, notification.model_id).then(required_obj => {
+    this.getPageRequiredObject(page, notification.model_id, notification.user_id).then(required_obj => {
       if (page && required_obj) {
         this.navCtrl.push(page, required_obj);
       } else {
@@ -81,6 +84,7 @@ export class NotificationPage {
     switch (model_type) {
       case "favorite":
       case "unfavorite":
+      case "post":
         targeted_model = 'PostSinglePage';
         break;
       case "follow":
@@ -90,16 +94,16 @@ export class NotificationPage {
     return targeted_model;
   }
 
-  private getPageRequiredObject(page: string, model_id: string) {
+  private getPageRequiredObject(page: string, model_id: string, user_id: string) {
     return new Promise(async (resolve, reject) => {
       let required_obj;
       switch (page) {
         case "PostSinglePage":
-          let post = await this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, model_id);
+          let post = await this.postService.getSpecificPostForUser(user_id, model_id);
           if (post) {
             required_obj = {
               post_id: model_id,
-              user_id: firebase.auth().currentUser.uid,
+              user_id: user_id,
               post
             };
           }

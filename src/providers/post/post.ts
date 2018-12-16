@@ -4,6 +4,7 @@ import {Events} from "ionic-angular";
 import {UserProvider} from "../user/user";
 import {FollowProvider} from "../follow/follow";
 import {ImghandlerProvider} from "../imghandler/imghandler";
+import {NotificationsProvider} from "../notifications/notifications";
 
 /*
   Generated class for the PostProvider provider.
@@ -16,7 +17,7 @@ export class PostProvider {
   firereq = firebase.database().ref('/posts');
   myFeed;
 
-  constructor(public events: Events, public userService: UserProvider, public followService: FollowProvider, public imgHandlerService: ImghandlerProvider) {
+  constructor(public events: Events, public userService: UserProvider, public followService: FollowProvider, public imgHandlerService: ImghandlerProvider, public notificationService: NotificationsProvider) {
     console.log('Hello PostProvider Provider');
   }
 
@@ -73,7 +74,8 @@ export class PostProvider {
   addPost(post) {
     return new Promise((resolve, reject) => {
       post.created_at = firebase.database.ServerValue.TIMESTAMP;
-      this.firereq.child(firebase.auth().currentUser.uid).push(post).then(() => {
+      this.firereq.child(firebase.auth().currentUser.uid).push(post).then((item) => {
+        this.notificationService.notifyFollowers(item.key);
         resolve({success: true});
       })
     });

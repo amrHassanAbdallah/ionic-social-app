@@ -163,4 +163,12 @@ export class UserProvider {
     return promise;
   }
 
+  getMyFollowers() {
+    return new Promise((resolve, reject) => {
+      this.firedata.child(firebase.auth().currentUser.uid).child('/followers').once('value', s => {
+        resolve(s.val());
+      })
+    });
+  }
+
 }

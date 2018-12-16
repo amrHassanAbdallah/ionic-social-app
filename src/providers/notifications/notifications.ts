@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import firebase from "firebase";
 import {Events} from "ionic-angular";
+import {UserProvider} from "../user/user";
 
 /*
   Generated class for the NotificationsProvider provider.
@@ -13,7 +14,8 @@ export class NotificationsProvider {
   firedata = firebase.database().ref('/notifications');
 
   constructor(
-    public events: Events
+    public events: Events,
+    public userService: UserProvider
   ) {
 
   }
@@ -69,4 +71,14 @@ export class NotificationsProvider {
     })
   }
 
+  notifyFollowers(model_id, model_type = 'post') {
+    let user_id = firebase.auth().currentUser.uid;
+    this.userService.getMyFollowers().then(users => {
+      for (let user in users) {
+        let targeted_user = users[user].user_id;
+        console.log("user id", user, targeted_user);
+        this.store(targeted_user, {user_id: user_id, model_id, model_type, seen: false})
+      }
+    })
+  }
 }
