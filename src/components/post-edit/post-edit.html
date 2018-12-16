@@ -1,5 +1,5 @@
 <ion-content padding>
-  <form #f="ngForm" (ngSubmit)="update(item,f.value)" action="">
+  <form #f="ngForm" (ngSubmit)="update(f.value)" action="">
     <ion-item>
       <ion-label>Title :</ion-label>
       <ion-input name="title" ngModel placeholder="{{item.title}}" type="text"></ion-input>

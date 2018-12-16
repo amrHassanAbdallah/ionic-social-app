@@ -15,16 +15,18 @@ import {NavController, NavParams} from "ionic-angular";
 })
 export class PostEditComponent {
   item: any;
+  key: string;
 
   constructor(public navCtrl: NavController, public postService: PostProvider, public navParams: NavParams) {
     this.item = navParams.get('item');
-
+    this.key = this.item.uid;
   }
 
-  update(key, value: { content: string, title: string }) {
-    value.title = value.title ? value.title : key.title;
-    value.content = value.content ? value.title : key.content;
-    this.postService.updatePost(key.uid, value);
+  update(value: { content: string, title: string }) {
+    value.title = value.title ? value.title : this.item.title;
+    value.content = value.content ? value.title : this.item.content;
+    console.log(value);
+    this.postService.updatePost(this.key, value);
     this.navCtrl.pop();
   }
 }

@@ -142,7 +142,8 @@ export class PostSinglePage {
   }
 
   editPost() {
-    this.navCtrl.push('PostEditComponent', {
+    this.post.uid = this.post_id;
+    this.navCtrl.push(PostEditComponent, {
       item: this.post
     });
 
