@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {NotificationsProvider} from "../../providers/notifications/notifications";
 import firebase from "firebase";
 import {UserProvider} from "../../providers/user/user";
@@ -22,7 +22,7 @@ import {PostProvider} from "../../providers/post/post";
 export class NotificationPage {
   myNotification = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider, public postService: PostProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider, public postService: PostProvider, public toastCtrl: ToastController) {
   }
 
   ionViewWillEnter() {
@@ -58,7 +58,16 @@ export class NotificationPage {
   showTargetedNotificationPage(notification: { user_id: string, model_id: string, model_type: string, seen: boolean }) {
     let page = this.getTargetedPage(notification.model_type);
     this.getPageRequiredObject(page, notification.model_id).then(required_obj => {
-      this.navCtrl.push(page, required_obj);
+      if (page && required_obj) {
+        this.navCtrl.push(page, required_obj);
+      } else {
+        var toaster = this.toastCtrl.create({
+          duration: 3000,
+          position: 'bottom'
+        });
+        toaster.setMessage('The post is no longer active .');
+        toaster.present();
+      }
     });
   }
 
@@ -81,11 +90,14 @@ export class NotificationPage {
       let required_obj;
       switch (page) {
         case "PostSinglePage":
-          required_obj = {
-            post_id: model_id,
-            user_id: firebase.auth().currentUser.uid,
-            post: await this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, model_id)
-          };
+          let post = await this.postService.getSpecificPostForUser(firebase.auth().currentUser.uid, model_id);
+          if (post) {
+            required_obj = {
+              post_id: model_id,
+              user_id: firebase.auth().currentUser.uid,
+              post
+            };
+          }
           break;
         case "ProfilePage":
           required_obj = {
