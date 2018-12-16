@@ -25,40 +25,43 @@
 
     </ion-list-header>
     <ion-list>
-  <ion-item-sliding *ngFor="let item of myFeed">
-    <ion-item (click)="viewPostDetails(item)">
+      <ion-item-sliding *ngFor="let item of myFeed">
+        <ion-item>
 
-      <ion-avatar item-start>
-        <img src="{{item.user.photoURL}}">
-        <span>              {{item.user.displayName || item.user.username}}
+          <ion-avatar item-start>
+            <img src="{{item.user.photoURL}}">
+            <span>              {{item.user.displayName || item.user.username}}
 </span>
-      </ion-avatar>
-      <ion-note color="">   {{item.created_at | date : 'dd/MM/yyyy h.mma'}}</ion-note>
-      <h4>{{item.title}} </h4>
-      <p>{{item.content}}</p>
-      <ion-icon item-end ios="ios-heart" md="ios-heart-outline" *ngIf="!item.isFavoritedByMe"
-                (click)="markAsFavorite(item)"></ion-icon>
-      <ion-icon item-end ios="ios-heart" md="ios-heart" *ngIf="item.isFavoritedByMe"
-                (click)="markAsunFavorite(item)"></ion-icon>
+          </ion-avatar>
+          <ion-note color="">   {{item.created_at | date : 'dd/MM/yyyy h.mma'}}</ion-note>
+          <div (click)="viewPostDetails(item)">
+            <h4>{{item.title}} </h4>
+            <p>{{item.content}}</p>
+          </div>
+
+          <ion-icon item-end ios="ios-heart" md="ios-heart-outline" *ngIf="!item.isFavoritedByMe"
+          ></ion-icon>
+          <ion-icon item-end ios="ios-heart" md="ios-heart" *ngIf="item.isFavoritedByMe"
+          ></ion-icon>
 
 
-    </ion-item>
-    <ion-item-options side="right" *ngIf="isItMine(item)">
-      <button ion-button color="secondary" (click)="editPost(item)">
-        <ion-icon name="create"></ion-icon>
-        Edit
-      </button>
-    </ion-item-options>
+        </ion-item>
+        <ion-item-options side="right" *ngIf="isItMine(item)">
+          <button ion-button color="secondary" (click)="editPost(item)">
+            <ion-icon name="create"></ion-icon>
+            Edit
+          </button>
+        </ion-item-options>
 
-    <ion-item-options side="left" *ngIf="isItMine(item)">
-      <button ion-button color="danger" (click)="removePost(item.uid)">
-        <ion-icon name="trash"></ion-icon>
-        Remove
-      </button>
-    </ion-item-options>
+        <ion-item-options side="left" *ngIf="isItMine(item)">
+          <button ion-button color="danger" (click)="removePost(item.uid)">
+            <ion-icon name="trash"></ion-icon>
+            Remove
+          </button>
+        </ion-item-options>
 
 
-  </ion-item-sliding>
+      </ion-item-sliding>
     </ion-list>
   </ion-list>
 
