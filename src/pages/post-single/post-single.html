@@ -47,6 +47,21 @@
         </button>
       </ion-col>
 
+      <ion-col *ngIf="isItMine">
+
+        <button (click)="editPost()" ion-button color="secondary" clear small icon-start>
+          <ion-icon name='create'></ion-icon>
+          Edit
+        </button>
+      </ion-col>
+
+      <ion-col *ngIf="isItMine">
+
+        <button (click)="removePost()" ion-button color="danger" clear small icon-start>
+          <ion-icon name='trash'></ion-icon>
+          Delete
+        </button>
+      </ion-col>
       <!--        <ion-col align-self-center text-center>
                 <ion-note>
                   11h ago

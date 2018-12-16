@@ -4,6 +4,8 @@ import {UserProvider} from "../../providers/user/user";
 import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
 import {FavoritesProvider} from "../../providers/favorites/favorites";
 import firebase from "firebase";
+import {PostEditComponent} from "../../components/post-edit/post-edit";
+import {PostProvider} from "../../providers/post/post";
 
 /**
  * Generated class for the PostSinglePage page.
@@ -20,7 +22,7 @@ import firebase from "firebase";
 export class PostSinglePage {
   post;
   post_id;
-  user_id;
+  owner_id;
   user;
   user_image;
   user_name;
@@ -29,16 +31,18 @@ export class PostSinglePage {
   post_title;
   created_at;
   post_content;
+  isItMine = false;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public userService: UserProvider,
     public imgHandler: ImghandlerProvider,
     public zone: NgZone,
-    public favoritesService: FavoritesProvider
+    public favoritesService: FavoritesProvider,
+    public postService: PostProvider
   ) {
     this.post_id = navParams.get('post_id');
-    this.user_id = navParams.get("user_id");
+    this.owner_id = navParams.get("user_id");
     this.post = navParams.get('post');
 
     //should get post details
@@ -54,15 +58,16 @@ export class PostSinglePage {
     this.isItFavoritedByMe();
     this.setUpPostOwner();
     this.countFavorites();
+    this.checkIsItMine();
   }
 
   async setUpPostOwner() {
-    this.user = await this.userService.getuserdetails(this.user_id);
-    this.user.uid = this.user_id;
+    this.user = await this.userService.getuserdetails(this.owner_id);
+    this.user.uid = this.owner_id;
     this.zone.run(async () => {
       this.post.user = this.user;
       this.user_name = this.user.displayName;
-      this.user_image = await this.imgHandler.getAuserImage(this.user_id);
+      this.user_image = await this.imgHandler.getAuserImage(this.owner_id);
     })
     // this.user.photoURL =
 
@@ -73,7 +78,7 @@ export class PostSinglePage {
   }
 
   markAsFavorite() {
-    this.favoritesService.favorite(this.user_id, this.post_id).then((res: any) => {
+    this.favoritesService.favorite(this.owner_id, this.post_id).then((res: any) => {
       if (res.success) {
         console.log("success ");
         this.is_fav_by_me = true;
@@ -87,7 +92,7 @@ export class PostSinglePage {
 
   markAsunFavorite() {
 
-    this.favoritesService.unFavorite(this.user_id, this.post_id).then((res: any) => {
+    this.favoritesService.unFavorite(this.owner_id, this.post_id).then((res: any) => {
       if (res.success) {
         console.log("success ");
         this.is_fav_by_me = false;
@@ -116,5 +121,30 @@ export class PostSinglePage {
         break;
       }
     }
+  }
+
+  checkIsItMine() {
+    if (this.owner_id == firebase.auth().currentUser.uid) {
+      this.isItMine = true;
+    }
+  }
+
+
+  removePost() {
+    console.log("here is the remove post method");
+    this.postService.deletePost(this.post_id).then((res: any) => {
+      if (res.success) {
+        this.navCtrl.pop();
+      }
+    }).catch((err) => {
+      alert(err);
+    })
+  }
+
+  editPost() {
+    this.navCtrl.push('PostEditComponent', {
+      item: this.post
+    });
+
   }
 }
