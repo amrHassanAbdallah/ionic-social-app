@@ -17,7 +17,21 @@
   <ion-list no-lines>
     <ion-list>
       <ion-item-sliding *ngFor="let item of myNotification">
-        <ion-item (click)="showTargetedNotificationPage(item)">
+        <ion-item (click)="showTargetedNotificationPage(item)" *ngIf="item.seen"
+                  [ngStyle]="{'background-color': '#dbe4e4'}">
+
+          <ion-avatar item-start>
+            <img src="{{item.user.photoURL}}">
+            <span>              {{item.user.displayName || item.user.username}}
+</span>
+          </ion-avatar>
+
+          <p align-items-center>{{item.message}}</p>
+
+        </ion-item>
+
+        <ion-item (click)="showTargetedNotificationPage(item)" *ngIf="!item.seen"
+        >
 
           <ion-avatar item-start>
             <img src="{{item.user.photoURL}}">

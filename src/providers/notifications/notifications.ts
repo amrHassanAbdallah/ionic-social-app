@@ -47,15 +47,26 @@ export class NotificationsProvider {
   count_my_notification() {
     return new Promise(async (resolve, reject) => {
       let allObjectNotifications = await this.get(firebase.auth().currentUser.uid);
-      let notification = [];
+      let counter = 0;
       for (let position in allObjectNotifications) {
         allObjectNotifications[position].uid = position;
-        notification.push(allObjectNotifications[position]);
+        if (!allObjectNotifications[position].seen) {
+          counter++;
+        }
       }
-      console.log(notification);
-      return resolve(notification.length);
+      return resolve(counter);
     });
 
+  }
+
+  updateNotification(notification) {
+    return new Promise((resolve, reject) => {
+      this.firedata.child(firebase.auth().currentUser.uid).child(notification.uid).update(notification).then(() => {
+        resolve({success: true});
+      }).catch((err) => {
+        reject(err);
+      })
+    })
   }
 
 }

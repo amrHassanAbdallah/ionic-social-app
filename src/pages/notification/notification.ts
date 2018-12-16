@@ -56,6 +56,11 @@ export class NotificationPage {
   }
 
   showTargetedNotificationPage(notification: { user_id: string, model_id: string, model_type: string, seen: boolean }) {
+    if (!notification.seen) {
+      notification.seen = true;
+      this.notificationService.updateNotification(notification);
+    }
+
     let page = this.getTargetedPage(notification.model_type);
     this.getPageRequiredObject(page, notification.model_id).then(required_obj => {
       if (page && required_obj) {
