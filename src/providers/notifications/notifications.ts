@@ -12,7 +12,7 @@ import {UserProvider} from "../user/user";
 @Injectable()
 export class NotificationsProvider {
   firedata = firebase.database().ref('/notifications');
-
+  active_notifications_count = 0;
   constructor(
     public events: Events,
     public userService: UserProvider
@@ -47,6 +47,7 @@ export class NotificationsProvider {
   }
 
   count_my_notification() {
+    this.active_notifications_count = 0;
     return new Promise(async (resolve, reject) => {
       let allObjectNotifications = await this.get(firebase.auth().currentUser.uid);
       let counter = 0;
@@ -56,6 +57,7 @@ export class NotificationsProvider {
           counter++;
         }
       }
+      this.active_notifications_count = counter;
       return resolve(counter);
     });
 
@@ -63,7 +65,11 @@ export class NotificationsProvider {
 
   updateNotification(notification) {
     return new Promise((resolve, reject) => {
+      // it will only update the notification from un seen to seen
+
       this.firedata.child(firebase.auth().currentUser.uid).child(notification.uid).update(notification).then(() => {
+        this.active_notifications_count--;
+        this.events.publish('active_notification_count');
         resolve({success: true});
       }).catch((err) => {
         reject(err);

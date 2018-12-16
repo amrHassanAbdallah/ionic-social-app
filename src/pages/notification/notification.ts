@@ -59,13 +59,8 @@ export class NotificationPage {
   }
 
   showTargetedNotificationPage(notification: { user_id: string, model_id: string, model_type: string, seen: boolean }) {
-    if (!notification.seen) {
-      notification.seen = true;
-      this.notificationService.updateNotification(notification);
-    }
-
     let page = this.getTargetedPage(notification.model_type);
-    this.getPageRequiredObject(page, notification.model_id, notification.user_id).then(required_obj => {
+    this.getPageRequiredObject(page, notification.model_id, notification.user_id, notification.model_type).then(required_obj => {
       if (page && required_obj) {
         this.navCtrl.push(page, required_obj);
       } else {
@@ -77,6 +72,11 @@ export class NotificationPage {
         toaster.present();
       }
     });
+
+    if (!notification.seen) {
+      notification.seen = true;
+      this.notificationService.updateNotification(notification);
+    }
   }
 
   private getTargetedPage(model_type: string) {
@@ -94,16 +94,19 @@ export class NotificationPage {
     return targeted_model;
   }
 
-  private getPageRequiredObject(page: string, model_id: string, user_id: string) {
+  private getPageRequiredObject(page: string, model_id: string, user_id: string, model_type: string) {
     return new Promise(async (resolve, reject) => {
       let required_obj;
       switch (page) {
         case "PostSinglePage":
-          let post = await this.postService.getSpecificPostForUser(user_id, model_id);
+          // from user should be the image but will fetch the post from the current signed in user iif it's favorite
+          // or unfavorite
+          let postOwnerID = (model_type == 'favorite' || model_type == 'unfavorite' ? firebase.auth().currentUser.uid : user_id);
+          let post = await this.postService.getSpecificPostForUser(postOwnerID, model_id);
           if (post) {
             required_obj = {
               post_id: model_id,
-              user_id: user_id,
+              user_id: postOwnerID,
               post
             };
           }
