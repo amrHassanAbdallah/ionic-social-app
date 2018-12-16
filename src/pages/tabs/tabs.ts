@@ -24,6 +24,9 @@ export class TabsPage {
   constructor(public notificationService: NotificationsProvider, public events: Events) {
     notificationService.count_my_notification().then(numb => {
       this.notification_num = numb;
+      if (numb == 0) {
+        this.notification_num = null;
+      }
     })
   }
 
