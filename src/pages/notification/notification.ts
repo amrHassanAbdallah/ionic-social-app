@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {NotificationsProvider} from "../../providers/notifications/notifications";
 import firebase from "firebase";
 import {UserProvider} from "../../providers/user/user";
@@ -20,39 +20,20 @@ import {PostProvider} from "../../providers/post/post";
   templateUrl: 'notification.html',
 })
 export class NotificationPage {
-  myNotification = [];
+  myNotification: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider, public postService: PostProvider, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public notificationService: NotificationsProvider, public userService: UserProvider, public imageHandler: ImghandlerProvider, public postService: PostProvider, public toastCtrl: ToastController, public events: Events) {
   }
 
   ionViewWillEnter() {
-    this.notificationService.get(firebase.auth().currentUser.uid).then(async notifications => {
-      let localNotifications = [];
-      for (let i in notifications) {
-        let object = notifications[i];
-        object.uid = i;
-        object.user = await this.userService.getuserdetails(object.user_id);
-        object.user.photoURL = await this.imageHandler.getAuserImage(object.user_id);
-        switch (object.model_type) {
-          case "favorite":
-            object.message = `${object.user.displayName} favorite  your  post . `;
-            break;
-          case "unfavorite":
-            object.message = `${object.user.displayName} un favorite  your  post . `;
-            break;
-          case "post":
-            object.message = `${object.user.displayName} created a new post  . `;
-            break;
-          case "follow":
-            console.log("follow");
-            object.message = `${object.user.displayName} followed you . `;
-            break;
-        }
-        localNotifications.push(object);
-      }
-      this.myNotification = localNotifications;
+    this.notificationService.get(firebase.auth().currentUser.uid);
+    this.events.subscribe('notifications', () => {
+      this.myNotification = this.notificationService.my_notification;
     })
+
+
   }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NotificationPage');

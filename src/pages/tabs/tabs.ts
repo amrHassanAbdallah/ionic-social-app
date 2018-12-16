@@ -22,19 +22,27 @@ export class TabsPage {
   notification_num;
 
   constructor(public notificationService: NotificationsProvider, public events: Events) {
+    //notificationService.get(firebase.auth().currentUser.uid);
     notificationService.count_my_notification().then(numb => {
       this.notification_num = numb;
       if (numb == 0) {
         this.notification_num = null;
       }
-    })
+    });
+
+
   }
 
   ionViewWillEnter() {
-
-    this.events.subscribe('active_notification_count', () => {
+    this.events.subscribe('notifications', () => {
+      console.log("I hear you ");
+      this.notification_num = 0;
       this.notification_num = this.notificationService.active_notifications_count;
+      if (this.notification_num == 0) {
+        this.notification_num = null;
+      }
     })
+
   }
 
 }
