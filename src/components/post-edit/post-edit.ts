@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {PostProvider} from "../../providers/post/post";
 import {NavController, NavParams} from "ionic-angular";
+import {ImghandlerProvider} from "../../providers/imghandler/imghandler";
 
 /**
  * Generated class for the PostEditComponent component.
@@ -16,7 +17,7 @@ import {NavController, NavParams} from "ionic-angular";
 export class PostEditComponent {
   item: any;
 
-  constructor(public navCtrl: NavController, public postService: PostProvider, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public postService: PostProvider, public navParams: NavParams, public imgHandler: ImghandlerProvider) {
     this.item = navParams.get('item');
 
   }
@@ -26,5 +27,11 @@ export class PostEditComponent {
     value.content = value.content ? value.title : key.content;
     this.postService.updatePost(key.uid, value);
     this.navCtrl.pop();
+  }
+
+  uploadImage() {
+    let url = this.imgHandler.uploadimage(this.item.uid, '/posts_img');
+    console.log(url);
+
   }
 }

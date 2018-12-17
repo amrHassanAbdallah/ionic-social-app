@@ -16,8 +16,8 @@ export class ImghandlerProvider {
   constructor(public filechooser: FileChooser) {
   }
 
-  uploadimage() {
-    var promise = new Promise((resolve, reject) => {
+  uploadimage(image_name = firebase.auth().currentUser.uid, location = '/profileimages') {
+    return new Promise((resolve, reject) => {
       this.filechooser.open().then((url) => {
         (<any>window).FilePath.resolveNativePath(url, (result) => {
           this.nativepath = result;
@@ -27,9 +27,14 @@ export class ImghandlerProvider {
               reader.readAsArrayBuffer(resFile);
               reader.onloadend = (evt: any) => {
                 var imgBlob = new Blob([evt.target.result], {type: 'image/jpeg'});
-                var imageStore = this.firestore.ref('/profileimages').child(firebase.auth().currentUser.uid);
+                var imageStore = this.firestore.ref(location).child(image_name);
                 imageStore.put(imgBlob).then(async (res) => {
-                  resolve(await this.getAuserImage(firebase.auth().currentUser.uid));
+                  if (location == '/profileimages') {
+                    resolve(await this.getAuserImage(firebase.auth().currentUser.uid));
+
+                  } else {
+                    resolve(await this.getImage(image_name, '/posts_img'))
+                  }
                 }).catch((err) => {
                   reject(err);
                 })
@@ -39,12 +44,23 @@ export class ImghandlerProvider {
         })
       })
     });
-    return promise;
   }
 
   getAuserImage(userId) {
     return new Promise((resolve2, reject2) => {
       this.firestore.ref('/profileimages').child(userId).getDownloadURL().then((url) => {
+        resolve2(url);
+      }).catch((err) => {
+        reject2(err);
+      })
+    })
+
+  }
+
+
+  getImage(model_id, location) {
+    return new Promise((resolve2, reject2) => {
+      this.firestore.ref(location).child(model_id).getDownloadURL().then((url) => {
         resolve2(url);
       }).catch((err) => {
         reject2(err);

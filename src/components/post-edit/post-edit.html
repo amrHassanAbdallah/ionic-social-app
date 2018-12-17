@@ -9,6 +9,17 @@
       <ion-label>Content :</ion-label>
       <ion-textarea name="content" ngModel placeholder="{{item.content}}"></ion-textarea>
     </ion-item>
+
+
+    <ion-item>
+      <button (click)="uploadImage()" color="hcolor" default icon-start ion-button small>
+        <!--
+                <ion-icon name='thumbs-up'></ion-icon>
+        -->
+        Update/Add image :
+      </button>
+
+    </ion-item>
     <button [disabled]="!f.valid" block ion-button type="submit">Update</button>
   </form>
 </ion-content>
