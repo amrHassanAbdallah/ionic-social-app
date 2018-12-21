@@ -22,13 +22,16 @@ export class TabsPage {
   notification_num;
 
   constructor(public notificationService: NotificationsProvider, public events: Events) {
-    //notificationService.get(firebase.auth().currentUser.uid);
-    notificationService.count_my_notification().then(numb => {
-      this.notification_num = numb;
-      if (numb == 0) {
-        this.notification_num = null;
+    notificationService.listenToTheUpdatesOverMyNotifications().then(() => {
+        notificationService.count_my_notification().then(numb => {
+          this.notification_num = numb;
+          if (numb == 0) {
+            this.notification_num = null;
+          }
+        });
       }
-    });
+    );
+    //notificationService.get(firebase.auth().currentUser.uid);
 
 
   }

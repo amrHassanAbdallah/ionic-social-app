@@ -19,6 +19,7 @@ export class FavoritesProvider {
 
   favorite(userKey, postKey) {
     return new Promise((resolve, reject) => {
+      console.log("Inside the favorite");
       this.firedata.child(userKey).child(postKey).child('/favorites').push({user_id: firebase.auth().currentUser.uid}).then(async () => {
         //and a record for the one he follows under the
         this.notificationService.store(userKey, {
@@ -27,6 +28,8 @@ export class FavoritesProvider {
           model_type: 'favorite',
           seen: false
         });
+        console.log("after  the favorite");
+
         resolve({success: true});
       })
     });
