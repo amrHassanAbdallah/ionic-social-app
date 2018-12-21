@@ -47,7 +47,8 @@ export class ImghandlerProvider {
       this.firestore.ref('/profileimages').child(userId).getDownloadURL().then((url) => {
         resolve2(url);
       }).catch((err) => {
-        reject2(err);
+        //reject2(err);
+        resolve2("../../assets/imgs/download.jpeg");
       })
     })
 
