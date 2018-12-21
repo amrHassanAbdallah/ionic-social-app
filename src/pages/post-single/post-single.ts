@@ -32,6 +32,7 @@ export class PostSinglePage {
   created_at;
   post_content;
   isItMine = false;
+  fav_button_state = null;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -78,11 +79,13 @@ export class PostSinglePage {
   }
 
   markAsFavorite() {
+    this.fav_button_state = true;
     this.favoritesService.favorite(this.owner_id, this.post_id).then((res: any) => {
       if (res.success) {
         console.log("success ");
         this.is_fav_by_me = true;
         this.total_favorite_count++;
+        this.fav_button_state = null;
 
       }
     }).catch((err) => {
@@ -91,12 +94,14 @@ export class PostSinglePage {
   }
 
   markAsunFavorite() {
+    this.fav_button_state = true;
 
     this.favoritesService.unFavorite(this.owner_id, this.post_id).then((res: any) => {
       if (res.success) {
         console.log("success ");
         this.is_fav_by_me = false;
         this.total_favorite_count--;
+        this.fav_button_state = null;
 
       }
     }).catch((err) => {

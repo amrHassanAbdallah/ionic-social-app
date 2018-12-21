@@ -34,13 +34,13 @@
     <ion-row>
       <ion-col>
 
-        <button *ngIf="!is_fav_by_me"
+        <button *ngIf="!is_fav_by_me" disabled={{fav_button_state}}
                 (click)="markAsFavorite()" ion-button color="#1c4a49" clear small icon-start>
           <ion-icon name='thumbs-up'></ion-icon>
           {{total_favorite_count}} Likes
         </button>
 
-        <button *ngIf="is_fav_by_me"
+        <button *ngIf="is_fav_by_me" disabled={{fav_button_state}}
                 (click)="markAsunFavorite()" ion-button color="hcolor" clear small icon-start>
           <ion-icon name='thumbs-up'></ion-icon>
           {{total_favorite_count}} Likes
